@@ -16,17 +16,20 @@
         android:text="Stepper"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="match_parent"
         android:layout_weight="50"
-        android:indeterminate="true" />
+        android:indeterminate="true"
+        android:layout_height="wrap_content" />
 
     <fragment
         android:id="@+id/nav_host_fragment"
         android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_weight="40" />
+        android:layout_weight="40"
+        android:layout_height="wrap_content" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
