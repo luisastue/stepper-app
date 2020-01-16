@@ -43,7 +43,7 @@ public class ChartOverview extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        mViewModel = ViewModelProviders.of(this).get(ChartOverviewViewModel.class);
+      /*  mViewModel = ViewModelProviders.of(this).get(ChartOverviewViewModel.class);
 
 
         chart = (LineChart) getView().findViewById(R.id.linechart);
@@ -63,7 +63,7 @@ public class ChartOverview extends Fragment {
 
         LineData lineData = new LineData(dataSet);
         chart.setData(lineData);
-        chart.invalidate(); // refresh
+        chart.invalidate(); // refresh */
 
 
         // TODO: Use the ViewModel
