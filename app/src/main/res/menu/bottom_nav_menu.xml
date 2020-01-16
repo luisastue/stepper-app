@@ -3,11 +3,11 @@
 
     <item
         android:id="@+id/navigation_chart"
-        android:title="@string/title_chart" />
-
+        android:title="@string/title_chart"
+    android:icon="@drawable/chart_symbol" />
 
     <item
         android:id="@+id/navigation_dates"
-        android:title="@string/title_dates" />
-
+        android:title="@string/title_dates"
+    android:icon="@drawable/date_symbol" />
 </menu>
