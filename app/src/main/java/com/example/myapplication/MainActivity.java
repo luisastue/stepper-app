@@ -1,5 +1,6 @@
 package com.example.myapplication;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -9,6 +10,8 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
+
+import ProgressBar.CircularProgressBar;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,8 +29,9 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
 
-
-
+        CircularProgressBar circularProgressBar = (CircularProgressBar) findViewById(R.id.circularProgress);
+        circularProgressBar.setProgress(50);
+        circularProgressBar.setProgressColor(Color.BLUE);
     }
 
 }
