@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navView, navController);
 
         CircularProgressBar circularProgressBar = (CircularProgressBar) findViewById(R.id.circularProgress);
-        circularProgressBar.setProgress(50);
-        circularProgressBar.setProgressColor(Color.BLUE);
+        circularProgressBar.setProgress(62);
+        circularProgressBar.setProgressColor(Color.rgb(51,181,189));
     }
 
 }
