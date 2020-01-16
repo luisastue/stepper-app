@@ -1,14 +1,24 @@
 package com.example.myapplication.data;
 
+import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 public class HistoryDataObject {
+    @PrimaryKey
     private int id;
+
+    @ColumnInfo(name = "steps")
     private int steps;
+
+    @ColumnInfo(name = "target")
     private int target;
+
+    @ColumnInfo(name = "date")
     private Date date;
 
     public HistoryDataObject(Date date, int steps, int target){
@@ -16,6 +26,8 @@ public class HistoryDataObject {
         this.steps = steps;
         this.target = target;
     }
+
+
     public int getSteps() {
         return steps;
     }
