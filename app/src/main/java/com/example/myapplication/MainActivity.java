@@ -32,12 +32,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.navigation_chart, R.id.navigation_dates)
                 .build();
-      //  NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
-       // NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-       // NavigationUI.setupWithNavController(navView, navController);
-
-        CircularProgressBar circularProgressBar = (CircularProgressBar) findViewById(R.id.circularProgress);
+        CircularProgressBar circularProgressBar = findViewById(R.id.circularProgress);
         circularProgressBar.setProgress(62);
         circularProgressBar.setProgressColor(Color.rgb(51,181,189));
     }

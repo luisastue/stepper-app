@@ -5,10 +5,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.MutableLiveData;
+import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDestination;
 
@@ -23,31 +26,32 @@ import com.github.mikephil.charting.data.LineDataSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.BLUE;
+
 public class ChartOverview extends Fragment {
 
-    private ChartOverviewViewModel mViewModel;
     private LineChart chart;
 
     public static ChartOverview newInstance() {
         return new ChartOverview();
     }
 
+
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.chart_overview_fragment, container, false);
+        View root = inflater.inflate(R.layout.chart_overview_fragment, container, false);
+        chart = root.findViewById(R.id.linechart);
+        chart.setData(getLineData());
 
+        chart.invalidate();
+        return root;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-      /*  mViewModel = ViewModelProviders.of(this).get(ChartOverviewViewModel.class);
 
-
-        chart = (LineChart) getView().findViewById(R.id.linechart);
-
+    public LineData getLineData(){
         History history = new History();
         List<HistoryDataObject> objects = history.getObjects();
         List<Entry> entries = new ArrayList<Entry>();
@@ -57,21 +61,12 @@ public class ChartOverview extends Fragment {
             entries.add(new Entry(i, o.getSteps()));
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Label"); // add entries to dataset
-        dataSet.setColor(Color.BLUE);
-        dataSet.setValueTextColor(Color.BLACK); // styling, ...
+        LineDataSet dataSet = new LineDataSet(entries, "Graph"); // add entries to dataset
+        dataSet.setColor(BLUE);
+        dataSet.setValueTextColor(BLACK); // styling, ...
 
-        LineData lineData = new LineData(dataSet);
-        chart.setData(lineData);
-        chart.invalidate(); // refresh */
-
-
-        // TODO: Use the ViewModel
-
-
+        return new LineData(dataSet);
     }
-
-
 
 
 
