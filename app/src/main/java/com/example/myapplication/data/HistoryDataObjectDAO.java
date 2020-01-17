@@ -15,6 +15,9 @@ public interface HistoryDataObjectDAO {
     @Query("Select * from historydataobject where id = (:objectId)")
     List<HistoryDataObject> get(int objectId);
 
+    @Query("Select * from historydataobject order by date desc limit 5")
+    List<HistoryDataObject> getLastFive();
+
     @Query("Select * from historydataobject")
     List<HistoryDataObject> getAll();
 
