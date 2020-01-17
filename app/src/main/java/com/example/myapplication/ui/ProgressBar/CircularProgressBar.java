@@ -1,4 +1,4 @@
-package ProgressBar;
+package com.example.myapplication.ui.ProgressBar;
 
 import android.animation.ValueAnimator;
 import android.content.Context;

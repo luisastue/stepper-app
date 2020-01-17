@@ -12,12 +12,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 
-import ProgressBar.CircularProgressBar;
+import com.example.myapplication.ui.ProgressBar.CircularProgressBar;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -29,10 +25,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         navView.setOnNavigationItemSelectedListener(this);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-        AppBarConfiguration appBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.navigation_chart, R.id.navigation_dates)
-                .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
 
         CircularProgressBar circularProgressBar = findViewById(R.id.circularProgress);
         circularProgressBar.setProgress(62);

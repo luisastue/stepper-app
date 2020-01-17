@@ -17,7 +17,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
 
-    <ProgressBar.CircularProgressBar
+    <com.example.myapplication.ui.ProgressBar.CircularProgressBar
         android:id="@+id/circularProgress"
         android:layout_width="410dp"
         android:layout_height="140dp"
