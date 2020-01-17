@@ -39,7 +39,6 @@ public class TestDB {
     public void createDB(){
         Context context = ApplicationProvider.getApplicationContext();
         DBService.getInstance().init(context);
-        DBService.getInstance().setCurrent(8000, 10000);
     }
     @After
     public void closeDB() throws IOException {
@@ -60,6 +59,7 @@ public class TestDB {
 
     @Test
     public void setCurrentAndCheckOnDB() throws Exception {
+        DBService.getInstance().setCurrent(8000, 10000);
         assertEquals(DBService.getInstance().getSteps(), 8000);
     }
 

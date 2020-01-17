@@ -6,6 +6,7 @@ import androidx.room.Room;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -28,10 +29,23 @@ public class DBService {
 
     public void init(Context context){
         this.context = context;
+        initializeDB();
     }
     private void open(){
         db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).allowMainThreadQueries().build();
         historyDao = db.getHistoryDao();
+    }
+
+    private void initializeDB(){
+        open();
+        List<HistoryDataObject> list = historyDao.get(getNow());
+        if(list.size() > 0){
+            currentObject = list.get(0);
+        } else{
+            currentObject = new HistoryDataObject(getNow(), 0, 10000);
+            historyDao.insert(currentObject);
+        }
+        close();
     }
 
     private void close(){
@@ -40,14 +54,9 @@ public class DBService {
 
     public void setCurrent(int steps, int target){
         open();
-        if (currentObject == null){
-            currentObject = new HistoryDataObject(getNow(), steps, target);
-            historyDao.insert(currentObject);
-        } else{
-            currentObject.setSteps(steps);
-            currentObject.setTarget(target);
-            historyDao.update(currentObject);
-        }
+        currentObject.setSteps(steps);
+        currentObject.setTarget(target);
+        historyDao.update(currentObject);
         close();
     }
 
@@ -83,17 +92,11 @@ public class DBService {
     }
 
     public int getSteps(){
-        if(currentObject!=null){
-            return currentObject.getSteps();
-        }
-        else return 0;
+        return currentObject.getSteps();
     }
-
     public int getTarget(){
-        if(currentObject!=null){
-            return currentObject.getTarget();
-        }
-        else return 0;
+        return currentObject.getTarget();
+
     }
 
     private Date getNow(){

@@ -9,7 +9,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.example.myapplication.data.DBService;
-import com.example.myapplication.data.ErrorMessage;
+import com.example.myapplication.ui.ErrorMessage;
 import com.example.myapplication.ui.chart.ChartOverview;
 import com.example.myapplication.ui.dates.DatesOverview;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -42,16 +42,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // menu should be considered as top level destinations.
 
         circularProgressBar = findViewById(R.id.circularProgress);
-        circularProgressBar.setProgress(62);
+        circularProgressBar.setProgress(steps);
         circularProgressBar.setProgressColor(Color.rgb(51, 181, 189));
+        checkSensor();
 
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
-            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        } else {
-            ErrorMessage errorMsg = new ErrorMessage();
-            errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
-        }
     }
 
     @Override
@@ -83,5 +77,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
 
+    }
+
+    private void checkSensor(){
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        } else {
+            ErrorMessage errorMsg = new ErrorMessage();
+            errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
+        }
     }
 }

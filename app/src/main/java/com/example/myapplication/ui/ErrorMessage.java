@@ -1,4 +1,4 @@
-package com.example.myapplication.data;
+package com.example.myapplication.ui;
 
 import android.app.AlertDialog;
 import android.content.Context;
