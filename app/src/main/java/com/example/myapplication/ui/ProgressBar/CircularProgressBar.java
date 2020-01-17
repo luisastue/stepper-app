@@ -72,7 +72,8 @@ public class CircularProgressBar extends View {
     }
 
     private void drawText(Canvas canvas) {
-        mPaint.setTextSize(Math.min(mViewWidth, mViewHeight) / 5f);
+        int fontSize = Math.min(mViewHeight, mViewWidth) / 7;
+        mPaint.setTextSize(fontSize);
         mPaint.setTextAlign(Paint.Align.CENTER);
         mPaint.setStrokeWidth(0);
         mPaint.setColor(mTextColor);

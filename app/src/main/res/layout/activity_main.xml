@@ -16,46 +16,73 @@
         android:text="Stepper"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
 
-
-    <com.example.myapplication.ui.ProgressBar.CircularProgressBar
-        android:id="@+id/circularProgress"
-        android:layout_width="410dp"
-        android:layout_height="140dp"
-        android:layout_centerHorizontal="true"
-        android:layout_weight="50" />
-
-    <EditText
-        android:id="@+id/PlainText"
-        android:layout_width="211dp"
-        android:layout_height="20dp"
-        android:layout_gravity="right"
-        android:layout_weight="5"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-    <TextView
-        android:layout_width="198dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="-40dp"
-        android:layout_weight="5"
-        android:gravity="right|center_vertical"
-        android:text="Target:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
-
-    <fragment
-        android:id="@+id/nav_host_fragment"
-        android:name="androidx.navigation.fragment.NavHostFragment"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_weight="40"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:paddingTop="10dp">
+
+        <com.example.myapplication.ui.ProgressBar.CircularProgressBar
+            android:id="@+id/circularProgress"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:textAlignment="viewEnd"
+            android:paddingRight="5dp"
+            android:text="Target:"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+            android:gravity="end" />
+
+        <EditText
+            android:id="@+id/PlainText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
+            android:background="@null"
+            android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="14dp"
+        android:layout_weight="52"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="07"
+            android:text="History" />
+
+        <fragment
+            android:id="@+id/nav_host_fragment"
+            android:name="androidx.navigation.fragment.NavHostFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="93" />
+
+    </LinearLayout>
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="5"
+        android:layout_weight="2"
         android:background="?android:attr/windowBackground"
         android:clipChildren="false"
         app:elevation="0dp"

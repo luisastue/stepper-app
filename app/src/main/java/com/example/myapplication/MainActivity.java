@@ -2,6 +2,7 @@ package com.example.myapplication;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 
@@ -23,12 +24,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(this);
+        getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, ChartOverview.newInstance()).commit();
+
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
         CircularProgressBar circularProgressBar = findViewById(R.id.circularProgress);
         circularProgressBar.setProgress(62);
         circularProgressBar.setProgressColor(Color.rgb(51,181,189));
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        circularProgressBar.setMinimumWidth(width);
     }
 
     @Override
@@ -43,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 break;
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, selectedFragment).commit();
-      Log.e("es geht", "ja");
         return true;
     }
 
