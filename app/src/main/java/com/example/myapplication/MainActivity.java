@@ -8,11 +8,10 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
 
 import com.example.myapplication.data.DBService;
+import com.example.myapplication.data.ErrorMessage;
 import com.example.myapplication.ui.chart.ChartOverview;
 import com.example.myapplication.ui.dates.DatesOverview;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -46,12 +45,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         circularProgressBar = findViewById(R.id.circularProgress);
         circularProgressBar.setProgress(62);
-        circularProgressBar.setProgressColor(Color.rgb(51,181,189));
+        circularProgressBar.setProgressColor(Color.rgb(51, 181, 189));
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-       Fragment selectedFragment = null;
+        Fragment selectedFragment = null;
         switch (item.getItemId()) {
             case R.id.navigation_chart:
                 selectedFragment = ChartOverview.newInstance();
@@ -67,15 +66,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        } else {
+            ErrorMessage errorMsg = new ErrorMessage();
+            errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
+        }
     }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.equals(mStep)){
+        if (event.sensor.equals(mStep)) {
             steps++;
             circularProgressBar.setProgress(steps);
-            if(steps % 100 == 0){
+            if (steps % 100 == 0) {
                 DBService.getInstance().updateSteps(steps);
             }
         }
