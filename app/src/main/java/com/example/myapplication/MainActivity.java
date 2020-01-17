@@ -9,6 +9,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.MenuItem;
 import com.example.myapplication.data.DBService;
+import com.example.myapplication.data.ErrorMessage;
 import com.example.myapplication.ui.chart.ChartOverview;
 import com.example.myapplication.ui.dates.DatesOverview;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -41,13 +42,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // menu should be considered as top level destinations.
 
         circularProgressBar = findViewById(R.id.circularProgress);
-        circularProgressBar.setProgress(steps);
-        circularProgressBar.setProgressColor(Color.rgb(51,181,189));
+        circularProgressBar.setProgress(62);
+        circularProgressBar.setProgressColor(Color.rgb(51, 181, 189));
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        } else {
+            ErrorMessage errorMsg = new ErrorMessage();
+            errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
+        }
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-       Fragment selectedFragment = null;
+        Fragment selectedFragment = null;
         switch (item.getItemId()) {
             case R.id.navigation_chart:
                 selectedFragment = ChartOverview.newInstance();
@@ -60,13 +69,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
-
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if(event.sensor.equals(mStep)){
+        if (event.sensor.equals(mStep)) {
             steps++;
             circularProgressBar.setProgress(steps);
-            if(steps % 100 == 0){
+            if (steps % 100 == 0) {
                 DBService.getInstance().updateSteps(steps);
             }
         }
