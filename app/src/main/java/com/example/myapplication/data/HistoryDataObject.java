@@ -3,15 +3,11 @@ package com.example.myapplication.data;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
 public class HistoryDataObject {
 
-    @PrimaryKey
-    private int id;
 
     @ColumnInfo(name = "steps")
     private int steps;
@@ -19,7 +15,7 @@ public class HistoryDataObject {
     @ColumnInfo(name = "target")
     private int target;
 
-    @ColumnInfo(name = "date")
+    @PrimaryKey
     private Date date;
 
     public HistoryDataObject(Date date, int steps, int target){
@@ -48,23 +44,12 @@ public class HistoryDataObject {
     public Date getDate() {
         return date;
     }
-    public void setDate(Date date) {
-        this.date = date;
-    }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     @Override
     public boolean equals(Object p){
         HistoryDataObject comparedObject = (HistoryDataObject) p;
         return (this.date.equals(comparedObject.getDate())
-                && this.id == comparedObject.getId()
                 && this.steps == comparedObject.getSteps()
                 &&this.target == comparedObject.getTarget());
     }

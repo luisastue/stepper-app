@@ -7,21 +7,14 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.MenuItem;
-
 import com.example.myapplication.data.DBService;
 import com.example.myapplication.ui.chart.ChartOverview;
 import com.example.myapplication.ui.dates.DatesOverview;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-
 import com.example.myapplication.ui.ProgressBar.CircularProgressBar;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, SensorEventListener {
@@ -34,7 +27,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        DBService.getInstance().init(this);
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        DBService.getInstance().init(this.getApplicationContext());
+        steps = DBService.getInstance().getSteps();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
@@ -45,7 +41,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // menu should be considered as top level destinations.
 
         circularProgressBar = findViewById(R.id.circularProgress);
-        circularProgressBar.setProgress(62);
+        circularProgressBar.setProgress(steps);
         circularProgressBar.setProgressColor(Color.rgb(51,181,189));
     }
 
@@ -64,11 +60,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-    }
 
     @Override
     public void onSensorChanged(SensorEvent event) {

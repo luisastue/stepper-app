@@ -1,5 +1,7 @@
 package com.example.myapplication.data;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -7,7 +9,14 @@ public class History {
     private ArrayList<HistoryDataObject> historyData = new ArrayList();
 
     public History(){
-        historyData.add(new HistoryDataObject(new Date(20200101), 5462, 10000));
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        Date d = null;
+        try {
+            d = sdf.parse("1.1.2020");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        historyData.add(new HistoryDataObject(d, 5462, 10000));
         historyData.add(new HistoryDataObject(new Date(20200102), 5462, 10000));
         historyData.add(new HistoryDataObject(new Date(20200103), 5412, 10000));
         historyData.add(new HistoryDataObject(new Date(20200104), 4462, 10000));
