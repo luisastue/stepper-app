@@ -46,6 +46,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         circularProgressBar = findViewById(R.id.circularProgress);
         circularProgressBar.setProgress(62);
         circularProgressBar.setProgressColor(Color.rgb(51, 181, 189));
+
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        } else {
+            ErrorMessage errorMsg = new ErrorMessage();
+            errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
+        }
     }
 
     @Override
@@ -61,17 +69,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         getSupportFragmentManager().beginTransaction().replace(R.id.nav_host_fragment, selectedFragment).commit();
         return true;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
-            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-        } else {
-            ErrorMessage errorMsg = new ErrorMessage();
-            errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
-        }
     }
 
     @Override
