@@ -28,6 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            android:layout_centerHorizontal="true"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -49,11 +50,13 @@
             android:gravity="end" />
 
         <EditText
-            android:id="@+id/PlainText"
+            android:id="@+id/targetEdit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="5"
             android:background="@null"
+            android:inputType="number"
+            android:imeOptions="actionDone"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </LinearLayout>
 
@@ -69,7 +72,7 @@
             android:layout_weight="07"
             android:text="History" />
 
-        <fragment
+        <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"
             android:name="androidx.navigation.fragment.NavHostFragment"
             android:layout_width="match_parent"

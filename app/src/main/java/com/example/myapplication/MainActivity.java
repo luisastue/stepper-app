@@ -7,7 +7,12 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
+
 import com.example.myapplication.data.DBService;
 import com.example.myapplication.ui.ErrorMessage;
 import com.example.myapplication.ui.chart.ChartOverview;
@@ -18,7 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import com.example.myapplication.ui.ProgressBar.CircularProgressBar;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, SensorEventListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, SensorEventListener, TextView.OnEditorActionListener {
 
 
     private SensorManager sensorManager;
@@ -41,8 +46,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         // menu should be considered as top level destinations.
 
         circularProgressBar = findViewById(R.id.circularProgress);
+        circularProgressBar.setmMaxProgress(DBService.getInstance().getTarget());
         circularProgressBar.setProgress(steps);
         circularProgressBar.setProgressColor(Color.rgb(51, 181, 189));
+
+        EditText editText = findViewById(R.id.targetEdit);
+        editText.setOnEditorActionListener(this);
 
     }
 
@@ -85,5 +94,18 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             ErrorMessage errorMsg = new ErrorMessage();
             errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
         }
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        boolean handled = false;
+        if (actionId == EditorInfo.IME_ACTION_SEND) {
+
+            DBService.getInstance().updateTarget(Integer.parseInt(v.getText().toString()));
+            circularProgressBar.setmMaxProgress(DBService.getInstance().getTarget());
+            circularProgressBar.setProgress(steps);
+            handled = true;
+        }
+        return handled;
     }
 }
