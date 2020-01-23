@@ -70,7 +70,9 @@ public class DBService {
     public List<HistoryDataObject> getLastFive(){
         open();
         List<HistoryDataObject> list = historyDao.getLastSix();
-        list.remove(list.get(0));
+        if(list.size()>0){
+            list.remove(list.get(0));
+        }
         close();
         return list;
     }

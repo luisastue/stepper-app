@@ -28,11 +28,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        super.onCreate(savedInstanceState);
+        checkSensor();
         DBService.getInstance().init(this.getApplicationContext());
         steps = DBService.getInstance().getSteps();
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
         navView.setOnNavigationItemSelectedListener(this);
@@ -44,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         circularProgressBar = findViewById(R.id.circularProgress);
         circularProgressBar.setProgress(steps);
         circularProgressBar.setProgressColor(Color.rgb(51, 181, 189));
-        checkSensor();
 
     }
 
