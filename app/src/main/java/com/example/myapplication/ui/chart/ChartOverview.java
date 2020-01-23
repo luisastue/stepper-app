@@ -58,6 +58,10 @@ public class ChartOverview extends Fragment {
 
         if(historyList.size() > 0) {
             chart = new LineChart(getContext());
+            chart.setMinimumHeight(350);
+            chart.setDescription(null);
+            chart.setDrawGridBackground(false);
+            chart.setDrawBorders(false);
             chart.setData(getLineData());
             chart.invalidate();
             layout.addView(chart);
@@ -73,21 +77,24 @@ public class ChartOverview extends Fragment {
 
     private LineData getLineData(){
         List<Entry> entries = new ArrayList<>();
+        List<Entry> targetEntries = new ArrayList<>();
 
         for (int i=0;i< historyList.size(); i++){
             HistoryDataObject o = historyList.get(i);
             entries.add(new Entry(i, o.getSteps()));
+            targetEntries.add(new Entry(i, o.getTarget()));
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, "Graph"); // add entries to dataset
-         // styling, ...
-
-        return new LineData(dataSet);
+        LineDataSet dataSet = new LineDataSet(entries, "Steps"); // add entries to dataset
+        dataSet = style(dataSet, getContext().getColor(R.color.colorPrimary));
+        LineDataSet targetSet = new LineDataSet(targetEntries, "Targets"); // add entries to dataset
+        targetSet = style(targetSet, getContext().getColor(R.color.colorAccent));
+        return new LineData(dataSet, targetSet);
     }
 
-    private LineDataSet style(LineDataSet dataSet, Color color){
-        dataSet.setColor(color.hashCode());
-        dataSet.setValueTextColor(BLACK);
+    private LineDataSet style(LineDataSet dataSet, int color){
+        dataSet.setColor(color);
+        dataSet.setValueTextSize(0);
 
         return dataSet;
     }

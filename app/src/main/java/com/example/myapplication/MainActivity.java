@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -47,10 +48,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         circularProgressBar = findViewById(R.id.circularProgress);
         circularProgressBar.setmMaxProgress(DBService.getInstance().getTarget());
+        circularProgressBar.setTextColor(getColor(R.color.colorPrimary));
         circularProgressBar.setProgress(steps);
-        circularProgressBar.setProgressColor(Color.rgb(51, 181, 189));
+        circularProgressBar.setProgressColor(getColor(R.color.colorPrimary));
+
 
         EditText editText = findViewById(R.id.targetEdit);
+        editText.setText(DBService.getInstance().getTarget() + "");
         editText.setOnEditorActionListener(this);
 
     }
@@ -98,14 +102,14 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        boolean handled = false;
         if (actionId == EditorInfo.IME_ACTION_SEND) {
-
+            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
             DBService.getInstance().updateTarget(Integer.parseInt(v.getText().toString()));
             circularProgressBar.setmMaxProgress(DBService.getInstance().getTarget());
             circularProgressBar.setProgress(steps);
-            handled = true;
+            return true;
         }
-        return handled;
+        return false;
     }
 }

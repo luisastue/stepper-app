@@ -59,10 +59,6 @@ public class DatesOverview extends Fragment {
             s.setPadding(3,3,3,3);
             t.setPadding(3,3,3,3);
             p.setPadding(3,3,3,3);
-            d.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            s.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            t.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
-            p.setGravity(Gravity.CENTER_VERTICAL | Gravity.CENTER_HORIZONTAL);
             tableRow.addView(d);
             tableRow.addView(s);
             tableRow.addView(t);
@@ -73,24 +69,25 @@ public class DatesOverview extends Fragment {
         for(int i=0; i<list.size(); i++){
             TableRow tableRow = new TableRow(getContext());
             TextView date = new TextView(getContext());
-            date.setText(list.get(i).getDate().toString());
+            date.setText(list.get(i).getDateFormatted());
             TextView stepView = new TextView(getContext());
             int steps = list.get(i).getSteps();
-            stepView.setText(steps);
+            stepView.setText(steps + "");
             int target = list.get(i).getTarget();
             TextView targetView = new TextView(getContext());
-            targetView.setText(target);
-            TextView percent = new TextView(getContext());
-            percent.setText((int)(steps / target) + " %");
+            targetView.setText(target + "");
+            TextView percentView = new TextView(getContext());
+            int percent = steps * 100 / target;
+            percentView.setText(percent + " %");
 
             date.setPadding(3,3,3,3);
             stepView.setPadding(3,3,3,3);
             targetView.setPadding(3,3,3,3);
-            percent.setPadding(3,3,3,3);
+            percentView.setPadding(3,3,3,3);
             tableRow.addView(date);
             tableRow.addView(stepView);
             tableRow.addView(targetView);
-            tableRow.addView(percent);
+            tableRow.addView(percentView);
             tableLayout.addView(tableRow);
         }
         return root;

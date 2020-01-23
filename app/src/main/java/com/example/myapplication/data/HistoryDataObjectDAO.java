@@ -11,11 +11,6 @@ import java.util.List;
 @Dao
 public interface HistoryDataObjectDAO {
 
-    @Query("Select * from historydataobject where date in (:dates)")
-    List<HistoryDataObject> loadAllByDates(Date[] dates);
-
-    @Query("Select steps from historydataobject where date = (:date)")
-    int getSteps(Date date);
 
     @Query("Select * from historydataobject where date = (:date)")
     List<HistoryDataObject> get(Date date);
@@ -23,17 +18,11 @@ public interface HistoryDataObjectDAO {
     @Query("Select * from historydataobject order by date desc limit 6")
     List<HistoryDataObject> getLastSix();
 
-    @Query("Select * from historydataobject where date = (:currentDate)")
-    HistoryDataObject getAtDate(Date currentDate);
-
     @Update
     void update(HistoryDataObject object);
 
-    @Query("Select * from historydataobject")
+    @Query("Select * from historydataobject order by date desc")
     List<HistoryDataObject> getAll();
-
-    @Insert
-    void insertAll(HistoryDataObject... objects);
 
     @Insert
     void insert(HistoryDataObject object);

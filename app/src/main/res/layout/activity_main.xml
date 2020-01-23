@@ -20,16 +20,15 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingTop="10dp">
+        android:padding="10dp">
 
         <com.example.myapplication.ui.ProgressBar.CircularProgressBar
             android:id="@+id/circularProgress"
-            android:layout_width="240dp"
-            android:layout_height="240dp"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_centerHorizontal="true"
             app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -38,6 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:padding="15dp"
         android:orientation="horizontal">
 
         <TextView
@@ -57,21 +57,26 @@
             android:layout_weight="5"
             android:background="@null"
             android:inputType="number"
-            android:imeOptions="actionDone"
+            android:imeOptions="actionSend"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="14dp"
-        android:layout_weight="52"
+        android:layout_weight="60"
+        android:background="@color/colorLight"
+        android:padding="30dp"
+        android:paddingTop="15dp"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="07"
-            android:text="History" />
+            android:text="Progress"
+            android:fontFamily="@font/vampiro_one"
+            android:textSize="20dp"/>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/nav_host_fragment"

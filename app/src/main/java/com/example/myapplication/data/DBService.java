@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 
-public class DBService {
+public class DBService implements HistoryDataHandler {
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy");
     private static DBService dbService;
@@ -19,16 +19,23 @@ public class DBService {
     private HistoryDataObjectDAO historyDao;
     private Context context;
     private HistoryDataObject currentObject;
+    private static History history;
+    private Date now;
 
-    public static DBService getInstance(){
-        if(dbService==null){
-            dbService = new DBService();
+    public static HistoryDataHandler getInstance(){
+       // if(dbService==null){
+         //   dbService = new DBService();
+       // }
+        //return dbService;
+        if(history==null){
+            history = new History();
         }
-        return dbService;
+        return history;
     }
 
     public void init(Context context){
         this.context = context;
+        now = getNow();
         initializeDB();
     }
     private void open(){
@@ -38,11 +45,16 @@ public class DBService {
 
     private void initializeDB(){
         open();
-        List<HistoryDataObject> list = historyDao.get(getNow());
+        List<HistoryDataObject> list = historyDao.getAll();
         if(list.size() > 0){
             currentObject = list.get(0);
+            int target = currentObject.getTarget();
+            if(!currentObject.getDate().equals(now)){
+                currentObject = new HistoryDataObject(now, 0, target);
+                historyDao.insert(currentObject);
+            }
         } else{
-            currentObject = new HistoryDataObject(getNow(), 0, 10000);
+            currentObject = new HistoryDataObject(now, 0, 10000);
             historyDao.insert(currentObject);
         }
         close();
@@ -96,9 +108,9 @@ public class DBService {
     public int getSteps(){
         return currentObject.getSteps();
     }
+
     public int getTarget(){
         return currentObject.getTarget();
-
     }
 
     private Date getNow(){
