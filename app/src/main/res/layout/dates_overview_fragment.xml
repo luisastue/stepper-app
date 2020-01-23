@@ -15,4 +15,103 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="*"
+        android:padding="70px">
+        <TableRow>
+            <TextView
+                android:text="Date"
+                android:padding="3dip"
+                android:layout_gravity="center"/>
+            <TextView
+                android:text="Steps"
+                android:padding="3dip"
+                android:layout_gravity="center"/>
+            <TextView
+                android:text="Target"
+                android:padding="3dip"
+                android:layout_gravity="center"/>
+            <TextView
+                android:text="Percentage"
+                android:padding="3dip"
+                android:layout_gravity="center"/>
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Date"
+                android:padding="3dip" />
+            <TextView
+                android:text="Steps"
+                android:padding="3dip" />
+            <TextView
+                android:text="Target"
+                android:padding="3dip" />
+            <TextView
+                android:text="Percentage"
+                android:padding="3dip" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Date"
+                android:padding="3dip" />
+            <TextView
+                android:text="Steps"
+                android:padding="3dip" />
+            <TextView
+                android:text="Target"
+                android:padding="3dip" />
+            <TextView
+                android:text="Percentage"
+                android:padding="3dip" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Date"
+                android:padding="3dip" />
+            <TextView
+                android:text="Steps"
+                android:padding="3dip" />
+            <TextView
+                android:text="Target"
+                android:padding="3dip" />
+            <TextView
+                android:text="Percentage"
+                android:padding="3dip" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Date"
+                android:padding="3dip" />
+            <TextView
+                android:text="Steps"
+                android:padding="3dip" />
+            <TextView
+                android:text="Target"
+                android:padding="3dip" />
+            <TextView
+                android:text="Percentage"
+                android:padding="3dip" />
+        </TableRow>
+        <TableRow>
+            <TextView
+                android:text="Date"
+                android:padding="3dip" />
+            <TextView
+                android:text="Steps"
+                android:padding="3dip" />
+            <TextView
+                android:text="Target"
+                android:padding="3dip" />
+            <TextView
+                android:text="Percentage"
+                android:padding="3dip" />
+        </TableRow>
+
+
+
+    </TableLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
