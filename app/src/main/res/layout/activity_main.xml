@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="5"
+        android:fontFamily="@font/vampiro_one"
         android:gravity="center"
         android:text="Stepper"
         android:textAppearance="@style/TextAppearance.AppCompat.Display2" />
