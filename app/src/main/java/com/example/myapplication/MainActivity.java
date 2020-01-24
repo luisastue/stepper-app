@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private SensorManager sensorManager;
     private Sensor mStep;
     private int steps = 0;
-    private boolean permissionGranted;
+    private boolean permissionGranted = false;
     CircularProgressBar circularProgressBar;
     private static final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 982;
 
@@ -111,24 +111,21 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACTIVITY_RECOGNITION)) {
-                ErrorMessage errorMsg = new ErrorMessage();
-                errorMsg.createDialog("Der Zugriff auf Ihr Sensor wird benötigt, um Ihre Schritte zählen zu können", "Berechtigung nötig", MainActivity.this);
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
                         MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
-                if (ContextCompat.checkSelfPermission(this,
-                        Manifest.permission.ACTIVITY_RECOGNITION)
-                        == PackageManager.PERMISSION_GRANTED){
-                    permissionGranted = true;
-                }
-                // MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION is an
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
         } else {
-            permissionGranted = true;
+            // Permission has already been granted
         }
         return permissionGranted;
     }
@@ -152,15 +149,23 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         boolean available = true;
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
-            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-            sensorManager.registerListener(this, mStep, SensorManager.SENSOR_DELAY_NORMAL);
 
-        } else {
+        if(!permissionGranted){
             ErrorMessage errorMsg = new ErrorMessage();
-            errorMsg.createDialog("Sensor nicht im Handy verfügbar!", "Error Message", MainActivity.this);
+            errorMsg.createDialog("Kein Zugriff auf den Sensor!", "Fehlende Berechtigung", MainActivity.this);
             available = false;
+        } else{
+            if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+                mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+                sensorManager.registerListener(this, mStep, SensorManager.SENSOR_DELAY_NORMAL);
+            } else {
+                ErrorMessage errorMsg = new ErrorMessage();
+                errorMsg.createDialog("Der Sensor ist nicht im Handy vorhanden!", "Error Message", MainActivity.this);
+                available = false;
+            }
         }
+
+
         return available;
     }
 
