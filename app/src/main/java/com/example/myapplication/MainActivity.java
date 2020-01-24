@@ -23,6 +23,7 @@ import com.example.myapplication.ui.dates.DatesOverview;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.example.myapplication.ui.ProgressBar.CircularProgressBar;
@@ -33,12 +34,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private SensorManager sensorManager;
     private Sensor mStep;
     private int steps = 0;
+    private boolean permissionGranted;
     CircularProgressBar circularProgressBar;
+    private static final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 982;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestPermission();
         checkSensor();
+
         DBService.getInstance().init(this.getApplicationContext());
         steps = DBService.getInstance().getSteps();
         setContentView(R.layout.activity_main);
@@ -94,24 +99,55 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     }
 
-    private void checkSensor(){
-        boolean available = true;
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
+    private boolean requestPermission(){
+         /*
+        / Check if the App has access rights for the STEP data
+        */
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACTIVITY_RECOGNITION)
                 != PackageManager.PERMISSION_GRANTED) {
-            // Permission not granted
-            available  = false;
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACTIVITY_RECOGNITION)) {
+                // Show an explanation to the user asynchronously -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
+                        MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACTIVITY_RECOGNITION)
+                        == PackageManager.PERMISSION_GRANTED){
+                    permissionGranted = true;
+                }
+                // MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            permissionGranted = true;
         }
+        return permissionGranted;
+    }
+
+    private boolean checkSensor(){
+
+        boolean available = true;
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if (available && sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
             mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
             sensorManager.registerListener(this, mStep, SensorManager.SENSOR_DELAY_NORMAL);
+
         } else {
-            available = false;
-        }
-        if(!available) {
             ErrorMessage errorMsg = new ErrorMessage();
             errorMsg.createDialog("Sensor nicht verfügbar!", "Error Message", MainActivity.this);
+            available = false;
         }
+        return available;
     }
 
     @Override
