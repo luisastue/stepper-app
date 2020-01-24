@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -21,6 +23,7 @@ import com.example.myapplication.ui.dates.DatesOverview;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import com.example.myapplication.ui.ProgressBar.CircularProgressBar;
 
@@ -92,13 +95,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     private void checkSensor(){
+        boolean available = true;
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_CALENDAR)
+                != PackageManager.PERMISSION_GRANTED) {
+            // Permission not granted
+            available  = false;
+        }
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+        if (available && sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
             mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
             sensorManager.registerListener(this, mStep, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
+            available = false;
+        }
+        if(!available) {
             ErrorMessage errorMsg = new ErrorMessage();
-            errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
+            errorMsg.createDialog("Sensor nicht verfügbar!", "Error Message", MainActivity.this);
         }
     }
 
