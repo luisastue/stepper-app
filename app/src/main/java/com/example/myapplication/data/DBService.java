@@ -42,7 +42,7 @@ public class DBService implements HistoryDataHandler {
         initializeDB();
     }
     private void open(){
-        db = Room.inMemoryDatabaseBuilder(context, AppDatabase.class).allowMainThreadQueries().build();
+        db = AppDatabase.getAppDatabase(context);
         historyDao = db.getHistoryDao();
     }
 
