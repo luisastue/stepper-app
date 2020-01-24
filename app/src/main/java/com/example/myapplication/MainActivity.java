@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     @Override
     public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.equals(mStep)) {
+        if (event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR) {
             steps++;
             circularProgressBar.setProgress(steps);
             if (steps % 100 == 0) {
