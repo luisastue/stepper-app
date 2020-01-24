@@ -65,6 +65,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (item.getItemId()) {
             case R.id.navigation_chart:
                 selectedFragment = ChartOverview.newInstance();
+
                 break;
             case R.id.navigation_dates:
                 selectedFragment = DatesOverview.newInstance();
@@ -77,12 +78,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR) {
-            if(event.values[0] == 1.0) {
-                steps++;
-                circularProgressBar.setProgress(steps);
-                if (steps % 100 == 0) {
-                    DBService.getInstance().updateSteps(steps);
-                }
+            steps++;
+            circularProgressBar.setProgress(steps);
+            if (steps % 100 == 0) {
+                DBService.getInstance().updateSteps(steps);
             }
         }
     }
@@ -96,8 +95,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
             mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-            sensorManager.registerListener(this, mStep,
-                    SensorManager.SENSOR_DELAY_NORMAL);
+            sensorManager.registerListener(this, mStep, SensorManager.SENSOR_DELAY_NORMAL);
         } else {
             ErrorMessage errorMsg = new ErrorMessage();
             errorMsg.createDialog("Sensor im Handy nicht vorhanden!", "Error Message", MainActivity.this);
@@ -113,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             circularProgressBar.setmMaxProgress(DBService.getInstance().getTarget());
             circularProgressBar.setProgress(steps);
             return true;
+
         }
         return false;
     }
