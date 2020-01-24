@@ -24,17 +24,16 @@ public class DBService implements HistoryDataHandler {
 
     public static HistoryDataHandler getInstance(){
 
-        /*
         if(dbService==null){
             dbService = new DBService();
         }
         return dbService;
-        */
+        /* use this instead of the real dbservice to get mock data (useful for emulator)
         if(history==null){
             history = new History();
         }
         return history;
-
+        */
 
     }
 

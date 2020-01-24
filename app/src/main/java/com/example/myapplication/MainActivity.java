@@ -1,9 +1,7 @@
 package com.example.myapplication;
-
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -15,7 +13,6 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import com.example.myapplication.data.DBService;
 import com.example.myapplication.ui.ErrorMessage;
 import com.example.myapplication.ui.chart.ChartOverview;
@@ -39,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     CircularProgressBar circularProgressBar;
     private static final int MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION = 982;
 
+// -------------------------------------------------------------------------------------------------Initializing Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,7 +67,20 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         editText.setOnEditorActionListener(this);
 
     }
+// -------------------------------------------------------------------------------------------------Front end Listeners
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEND) {
+            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
+            DBService.getInstance().updateTarget(Integer.parseInt(v.getText().toString()));
+            circularProgressBar.setmMaxProgress(DBService.getInstance().getTarget());
+            circularProgressBar.setProgress(steps);
+            return true;
 
+        }
+        return false;
+    }
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment selectedFragment = null;
@@ -86,22 +97,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
-    @Override
-    public void onSensorChanged(SensorEvent event) {
-        if (event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR) {
-            steps++;
-            circularProgressBar.setProgress(steps);
-            if (steps % 10 == 0) {
-                DBService.getInstance().updateSteps(steps);
-            }
-        }
-    }
 
-    @Override
-    public void onAccuracyChanged(Sensor sensor, int accuracy) {
-
-    }
-
+// -------------------------------------------------------------------------------------------------Sensor functions
     private boolean requestPermission(){
          /*
         / Check if the App has access rights for the STEP data
@@ -114,16 +111,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACTIVITY_RECOGNITION)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                ErrorMessage errorMsg = new ErrorMessage();
+                errorMsg.createDialog("Eine Berechtigung wird benötigt, um die Schritte zählen zu können", "Berechtigung fehlt", MainActivity.this);
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
                         new String[]{Manifest.permission.ACTIVITY_RECOGNITION},
                         MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION is an
                 // app-defined int constant. The callback method gets the
                 // result of the request.
             }
@@ -148,7 +144,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         }
     }
-
     private boolean checkSensor(){
 
         boolean available = true;
@@ -165,16 +160,19 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     }
 
     @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_SEND) {
-            InputMethodManager imm = (InputMethodManager)v.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
-            DBService.getInstance().updateTarget(Integer.parseInt(v.getText().toString()));
-            circularProgressBar.setmMaxProgress(DBService.getInstance().getTarget());
+    public void onSensorChanged(SensorEvent event) {
+        if (event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR) {
+            steps++;
             circularProgressBar.setProgress(steps);
-            return true;
-
+            if (steps % 10 == 0) {
+                DBService.getInstance().updateSteps(steps);
+            }
         }
-        return false;
     }
+
+    @Override
+    public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+    }
+
 }
