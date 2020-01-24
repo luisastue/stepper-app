@@ -24,16 +24,17 @@ public class DBService implements HistoryDataHandler {
 
     public static HistoryDataHandler getInstance(){
 
+        /*
         if(dbService==null){
             dbService = new DBService();
         }
         return dbService;
-        /*
+        */
         if(history==null){
             history = new History();
         }
         return history;
-        */
+
 
     }
 

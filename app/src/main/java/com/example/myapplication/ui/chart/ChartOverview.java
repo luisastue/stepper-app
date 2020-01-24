@@ -58,12 +58,15 @@ public class ChartOverview extends Fragment {
 
         if(historyList.size() > 0) {
             chart = new LineChart(getContext());
-            chart.setMinimumHeight(350);
+            chart.setMinimumHeight(400);
             chart.setDescription(null);
             chart.setDrawGridBackground(false);
             chart.setDrawBorders(false);
             chart.setData(getLineData());
             chart.invalidate();
+            chart.getXAxis().setEnabled(false);
+            chart.getXAxis().setDrawGridLines(false);
+            chart.getAxisRight().setDrawLabels(false);
             layout.addView(chart);
         } else {
             TextView textView = new TextView(getContext());
