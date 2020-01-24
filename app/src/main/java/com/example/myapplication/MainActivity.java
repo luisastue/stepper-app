@@ -42,8 +42,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        requestPermission();
-
+        checkSensor();
+        if(permissionGranted){
+            mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+            sensorManager.registerListener(this, mStep, SensorManager.SENSOR_DELAY_NORMAL);
+        }
         DBService.getInstance().init(this.getApplicationContext());
         steps = DBService.getInstance().getSteps();
         setContentView(R.layout.activity_main);
@@ -125,7 +128,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 // result of the request.
             }
         } else {
-            // Permission has already been granted
+            permissionGranted = true;
         }
         return permissionGranted;
     }
@@ -138,34 +141,26 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     permissionGranted = true;
+
                 }
-                checkSensor();
                 return;
             }
 
         }
     }
+
     private boolean checkSensor(){
 
         boolean available = true;
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
 
-        if(!permissionGranted){
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
+            requestPermission();
+        } else {
             ErrorMessage errorMsg = new ErrorMessage();
-            errorMsg.createDialog("Kein Zugriff auf den Sensor!", "Fehlende Berechtigung", MainActivity.this);
+            errorMsg.createDialog("Der Sensor ist nicht im Handy vorhanden!", "Error Message", MainActivity.this);
             available = false;
-        } else{
-            if (sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR) != null) {
-                mStep = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-                sensorManager.registerListener(this, mStep, SensorManager.SENSOR_DELAY_NORMAL);
-            } else {
-                ErrorMessage errorMsg = new ErrorMessage();
-                errorMsg.createDialog("Der Sensor ist nicht im Handy vorhanden!", "Error Message", MainActivity.this);
-                available = false;
-            }
         }
-
-
         return available;
     }
 
