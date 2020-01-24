@@ -25,10 +25,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
 import com.example.myapplication.ui.ProgressBar.CircularProgressBar;
 
-public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, SensorEventListener, TextView.OnEditorActionListener {
+public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener, SensorEventListener, TextView.OnEditorActionListener, ActivityCompat.OnRequestPermissionsResultCallback {
 
 
     private SensorManager sensorManager;
@@ -42,7 +43,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestPermission();
-        checkSensor();
 
         DBService.getInstance().init(this.getApplicationContext());
         steps = DBService.getInstance().getSteps();
@@ -111,9 +111,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACTIVITY_RECOGNITION)) {
-                // Show an explanation to the user asynchronously -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
+                ErrorMessage errorMsg = new ErrorMessage();
+                errorMsg.createDialog("Der Zugriff auf Ihr Sensor wird benötigt, um Ihre Schritte zählen zu können", "Berechtigung nötig", MainActivity.this);
             } else {
                 // No explanation needed; request the permission
                 ActivityCompat.requestPermissions(this,
@@ -133,7 +132,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
         return permissionGranted;
     }
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String[] permissions, int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACTIVITY_RECOGNITION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    permissionGranted = true;
+                }
+                checkSensor();
+                return;
+            }
 
+        }
+    }
     private boolean checkSensor(){
 
         boolean available = true;
@@ -144,7 +158,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         } else {
             ErrorMessage errorMsg = new ErrorMessage();
-            errorMsg.createDialog("Sensor nicht verfügbar!", "Error Message", MainActivity.this);
+            errorMsg.createDialog("Sensor nicht im Handy verfügbar!", "Error Message", MainActivity.this);
             available = false;
         }
         return available;
