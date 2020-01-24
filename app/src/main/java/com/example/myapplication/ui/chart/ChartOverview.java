@@ -78,11 +78,13 @@ public class ChartOverview extends Fragment {
     private LineData getLineData(){
         List<Entry> entries = new ArrayList<>();
         List<Entry> targetEntries = new ArrayList<>();
+        int e = 0;
+        for (int i=(historyList.size()-1);i>=0; i--){
 
-        for (int i=0;i< historyList.size(); i++){
             HistoryDataObject o = historyList.get(i);
-            entries.add(new Entry(i, o.getSteps()));
-            targetEntries.add(new Entry(i, o.getTarget()));
+            entries.add(new Entry(e, o.getSteps()));
+            targetEntries.add(new Entry(e, o.getTarget()));
+            e++;
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Steps"); // add entries to dataset

@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (event.sensor.getType()==Sensor.TYPE_STEP_DETECTOR) {
             steps++;
             circularProgressBar.setProgress(steps);
-            if (steps % 100 == 0) {
+            if (steps % 10 == 0) {
                 DBService.getInstance().updateSteps(steps);
             }
         }

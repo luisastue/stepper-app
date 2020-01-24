@@ -73,4 +73,5 @@ public class TestDB {
         DBService.getInstance().updateSteps(8100);
         assertEquals(DBService.getInstance().getSteps(), 8100);
     }
+
 }

@@ -23,17 +23,18 @@ public class DBService implements HistoryDataHandler {
     private Date now;
 
     public static HistoryDataHandler getInstance(){
+
         if(dbService==null){
             dbService = new DBService();
         }
         return dbService;
-       /*
+        /*
         if(history==null){
             history = new History();
         }
         return history;
-
         */
+
     }
 
     public void init(Context context){
